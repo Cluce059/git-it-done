@@ -21,7 +21,8 @@ var getRepoIssues = function(repo){
             });
         }
         else{
-            alert("There was a problem with that request!");
+            //send user to homepage
+            document.location.replace("./index.html");
         }
     });
     //^must user promise syntax to access data in the reponse
@@ -74,8 +75,15 @@ var displayWarning = function(repo){
 var getRepoName = function(){
     var queryString = document.location.search;
     var repoName = queryString.split("=")[1];
-    getRepoIssues(repoName);    
-    repoNameEl.textContent =repoName;
+    //check if user entered valid repo name/no issues w it
+    if(repoName){
+        getRepoIssues(repoName);    
+        repoNameEl.textContent =repoName;
+    }
+    else{
+        //sends user back to search page
+        document.location.replace("./index.html");
+    }
 };
 
 getRepoName();
