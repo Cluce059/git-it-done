@@ -2,6 +2,11 @@
 var isssueContainerEl = document.querySelector("#issues-container");
 //container for limit warning
 var limitWarningEl = document.querySelector("#limit-warning");
+//var to hold query string of repo's issues page
+var queryString =  document.location.search;
+//dom reference to repo-name
+var repoNameEl = document.querySelector("#repo-name");
+
 var getRepoIssues = function(repo){
     //add the ? stmnt at the end to change the order they are listed in
     var apiUrl = "https://api.github.com/repos/" + repo + "/issues?direction=asc";
@@ -29,7 +34,7 @@ var displayIssues = function(issues){
         isssueContainerEl.textContent = "This repo has no open issues!";
     }
     for(var i = 0;  i< issues.length; i++){
-        //make link el to take user to github issue in question
+        //make link el to take user to the issue in question in gihub
         var issueEl = document.createElement("a");
         issueEl.classList = "list-item flex-row justify-space-between align-center";
         issueEl.setAttribute("href", issues[i].html_url);
@@ -54,6 +59,7 @@ var displayIssues = function(issues){
         isssueContainerEl.appendChild(issueEl);
         }
 };
+
 var displayWarning = function(repo){
     //add text to container
     limitWarningEl.textContent = "To see more than 30 repos, vitit ";
@@ -64,4 +70,12 @@ var displayWarning = function(repo){
     limitWarningEl.appendChild(linkEl);
 };
 
-getRepoIssues("facebook/react");
+//lets make this api call more dynamic
+var getRepoName = function(){
+    var queryString = document.location.search;
+    var repoName = queryString.split("=")[1];
+    getRepoIssues(repoName);    
+    repoNameEl.textContent =repoName;
+};
+
+getRepoName();
